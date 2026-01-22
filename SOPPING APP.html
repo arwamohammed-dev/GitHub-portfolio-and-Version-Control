@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping App 2026</title>
+    <style>
+        /* Modern Design */
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f8f9fa; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; }
+        
+        /* Registration Form Style */
+        .form-group { margin-bottom: 15px; }
+        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; }
+        button:hover { background-color: #218838; }
+
+        /* Shop Grid Style */
+        #shopPage { display: none; } /* Hidden initially */
+        .category-title { margin: 30px 0 15px; padding: 10px; background: #f1f3f5; border-left: 5px solid #28a745; border-radius: 4px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .product-card { border: 1px solid #eee; padding: 15px; text-align: center; border-radius: 12px; transition: 0.3s; }
+        .product-card:hover { box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .product-card img { width: 150px; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+        .price { font-weight: bold; color: #28a745; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 1. Registration Page Section -->
+    <div id="registerPage">
+        <h2>User Registration</h2>
+        <form id="regForm">
+            <div class="form-group"><input type="text" id="fname" placeholder="First Name" required></div>
+            <div class="form-group"><input type="text" id="lname" placeholder="Last Name" required></div>
+            <div class="form-group"><input type="text" id="uname" placeholder="Username" required></div>
+            <div class="form-group"><input type="email" id="email" placeholder="Email Address" required></div>
+            <div class="form-group"><input type="password" id="pass" placeholder="Password (min 6 chars)" required minlength="6"></div>
+            <button type="submit">Sign Up & Enter Shop</button>
+        </form>
+    </div>
+
+    <!-- 2. Main Shop Page Section -->
+    <div id="shopPage">
+        <h2>Welcome to Our Shop</h2>
+        
+        <!-- Fruits -->
+        <div class="category-title"><h3>Fruits</h3></div>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="apple.jpg" alt="Apple">
+                <div>Fresh Apple</div>
+                <div class="price">$2.00</div>
+            </div>
+            <div class="product-card">
+                <img src="mango.jpg" alt="Mango">
+                <div>Sweet Mango</div>
+                <div class="price">$3.50</div>
+            </div>
+        </div>
+
+        <!-- Dairy -->
+        <div class="category-title"><h3>Dairy</h3></div>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="milk.jpg" alt="Milk">
+                <div>Fresh Milk</div>
+                <div class="price">$4.00</div>
+            </div>
+        </div>
+
+        <!-- Snacks -->
+        <div class="category-title"><h3>Snacks</h3></div>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="Potato Chips.jpg" alt="Chips">
+                <div>Potato Chips</div>
+                <div class="price">$1.50</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('regForm').onsubmit = function(e) {
+        e.preventDefault();
+
+        // Collecting info for the file
+        const userInfo = `
+        REGISTRATION REPORT (2026)
+        --------------------------
+        First Name: ${document.getElementById('fname').value}
+        Last Name: ${document.getElementById('lname').value}
+        Username: ${document.getElementById('uname').value}
+        Email: ${document.getElementById('email').value}
+        `;
+
+        // 4. Print user information in a text file
+        const blob = new Blob([userInfo], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'user_data.txt';
+        link.click();
+
+        // 3. Notify user and refresh interface
+        alert("Registration Successful! Your information has been saved.");
+        
+        // Show the shop section and hide registration
+        document.getElementById('registerPage').style.display = 'none';
+        document.getElementById('shopPage').style.display = 'block';
+    };
+</script>
+
+</body>
+</html>
