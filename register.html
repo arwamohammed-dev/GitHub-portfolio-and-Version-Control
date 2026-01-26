@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Page</title>
+</head>
+<body>
+    <form id="regForm">
+        <input type="text" id="fname" placeholder="First Name" required><br>
+        <input type="text" id="lname" placeholder="Last Name" required><br>
+        <input type="text" id="uname" placeholder="Username" required><br>
+        <input type="email" id="email" placeholder="Email" required><br>
+        <input type="password" id="pass" placeholder="Password" required><br>
+        <button type="submit">Register</button>
+    </form>
+    <p id="msg"></p>
+
+    <!-- استخدام نسخة متوافقة جداً من Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com";
+
+        // ضع بياناتك هنا بدقة
+        const firebaseConfig = {
+          apiKey: "AIzaSyDRKkbdVrofpCaNGQdkOcrC9GzMWYqnNBk",
+          authDomain: "shopping-web-app-e7d28.firebaseapp.com",
+          projectId: "shopping-web-app-e7d28",
+          storageBucket: "shopping-web-app-e7d28.firebasestorage.app",
+          messagingSenderId: "168153311322",
+          appId: "1:168153311322:web:7a3c581bdf09429f739063"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.getElementById('regForm').onsubmit = async (e) => {
+            e.preventDefault();
+            document.getElementById('msg').innerText = "جاري الحفظ...";
+
+            try {
+                const docRef = await addDoc(collection(db, "users"), {
+                    first_name: document.getElementById('fname').value,
+                    last_name: document.getElementById('lname').value,
+                    username: document.getElementById('uname').value,
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('pass').value
+                });
+                document.getElementById('msg').innerText = "✅ تم الحفظ بنجاح! رقم الوثيقة: " + docRef.id;
+                document.getElementById('regForm').reset();
+            } catch (error) {
+                document.getElementById('msg').innerText = "❌ خطأ: " + error.message;
+                console.error(error);
+            }
+        };
+    </script>
+</body>
+</html>
