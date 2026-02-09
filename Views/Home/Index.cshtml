@@ -1,0 +1,98 @@
+﻿@{
+    ViewData["Title"] = "Radar Tactical View";
+}
+
+<div class="container-fluid mt-3">
+    <!-- الهيدر العلوي للرادار -->
+    <div class="d-flex justify-content-between align-items-center bg-dark p-2 text-white rounded-top shadow">
+        <h5 class="mb-0 font-monospace">🛰️ RADAR_UNIT: ACTIVE_DISPLAY</h5>
+        <button class="btn btn-outline-success btn-sm" onclick="openNav()">☰ RADAR MENU</button>
+    </div>
+
+    <!-- حاوية الخريطة (الWrapper) -->
+    <div id="mapWrapper" style="position: relative; height: 650px; background: #000; border: 2px solid #333; overflow: hidden; cursor: grab; shadow: inset 0 0 20px #000;">
+
+        <!-- الطبقة المتحركة (تجمع الصورة والنقطة مع بعض) -->
+        <div id="radarLayer" style="position: absolute; width: 100%; height: 100%; transform-origin: center; transition: transform 0.1s ease-out;">
+
+            <!-- الصورة التكتيكية -->
+            <img src="~/images/radar.jpg" style="width: 100%; height: 100%; object-fit: contain;" draggable="false" />
+
+            <!-- نقطة الهدف (تتحرك وتكبر مع الخريطة) -->
+            <div id="targetPoint" style="position: absolute; top: 45%; left: 52%; width: 16px; height: 16px; background: #ff0000; border-radius: 50%; box-shadow: 0 0 15px #ff0000; border: 2px solid white; z-index: 1000;">
+                <span style="position: absolute; top: -22px; left: -15px; color: #ff0000; font-weight: bold; font-size: 11px; white-space: nowrap; text-shadow: 1px 1px 2px black;">
+                    [TARGET_01]
+                </span>
+            </div>
+        </div>
+
+        <!-- أزرار التحكم الجانبية (Zoom & Layers) -->
+        <div style="position: absolute; bottom: 30px; right: 20px; display: flex; flex-direction: column; gap: 8px; z-index: 1001;">
+            <button class="btn btn-light shadow-sm fw-bold" onclick="changeZoom(0.2)">➕</button>
+            <button class="btn btn-light shadow-sm fw-bold" onclick="changeZoom(-0.2)">➖</button>
+            <button class="btn btn-warning shadow-sm" onclick="toggleLayer()" title="Change Layers">🖼️</button>
+        </div>
+
+        <!-- مؤشر الإحداثيات الوهمي (لإعطاء مظهر احترافي) -->
+        <div style="position: absolute; bottom: 10px; left: 15px; color: #00ff00; font-family: 'Courier New'; font-size: 12px; z-index: 1001; background: rgba(0,0,0,0.5); padding: 5px;">
+            LAT: 24.7136 | LNG: 46.6753 | ALT: 2400ft
+        </div>
+    </div>
+</div>
+
+<script>
+    let scale = 1;
+    let isDragging = false;
+    let startX, startY, translateX = 0, translateY = 0;
+
+    const radarLayer = document.getElementById('radarLayer');
+    const wrapper = document.getElementById('mapWrapper');
+
+    // 1. وظيفة الزوم باستخدام عجلة الماوس (متطلب التاسك 3-a)
+    wrapper.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.15 : 0.15;
+        changeZoom(delta);
+    });
+
+    function changeZoom(delta) {
+        scale += delta;
+        // حدود الزوم
+        if (scale < 0.4) scale = 0.4;
+        if (scale > 6) scale = 6;
+        applyTransform();
+    }
+
+    // 2. وظيفة السحب (متطلب التاسك 3-b)
+    wrapper.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        wrapper.style.cursor = 'grabbing';
+        startX = e.clientX - translateX;
+        startY = e.clientY - translateY;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        translateX = e.clientX - startX;
+        translateY = e.clientY - startY;
+        applyTransform();
+    });
+
+    window.addEventListener('mouseup', () => {
+        isDragging = false;
+        wrapper.style.cursor = 'grab';
+    });
+
+    function applyTransform() {
+        // نطبق التحريك والزوم على الطبقة اللي تجمع (الصورة + النقطة)
+        radarLayer.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    }
+
+    // 3. وظيفة تغيير الطبقات (متطلب التاسك 3-c)
+    let isNightMode = false;
+    function toggleLayer() {
+        isNightMode = !isNightMode;
+        // تأثير "الرؤية الليلية" العسكري
+        radarLayer.style.filter = isNightMode ? "invert(100%) hue-rotate(180deg) brightness(1.2) contrast(1.2)" : "none";
+    }
+</script>
