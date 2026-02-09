@@ -1,0 +1,15 @@
+﻿body {
+    .leaflet-container {
+        height: 100%;
+        width: 100%;
+        background: #eee;
+    }
+
+    .leaflet-map-pane {
+        z-index: 2;
+    }
+
+    .leaflet-tile-pane {
+        z-index: 1;
+    }
+}
