@@ -8,3 +8,5 @@ This is a simple GitHub Portfolio project created during my training.
 Radar_Database_setup.sql
 Database_result.png
 Task4.pptx
+## task 5
+"An image was used as an interactive alternative to the map due to hardware limitations that prevent running live map services smoothly."
