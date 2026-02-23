@@ -11,3 +11,5 @@ Task4.pptx
 ## task 5
 "An image was used as an interactive alternative to the map due to hardware limitations that prevent running live map services smoothly.
 and A folder containing screenshots of the web interface has been uploaded."
+## task 6 
+task 6 files is uploaded
