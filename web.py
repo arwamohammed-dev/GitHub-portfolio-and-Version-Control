@@ -14,7 +14,13 @@ def get_planes():
             planes = json.load(f)
     except:
         planes = {}
-    return jsonify(planes)
+
+    # حذف الطائرات التي سرعتها = 0
+    filtered_planes = {
+        tid: data for tid, data in planes.items()
+        if data.get("speed", 0) > 0
+    }
+
+    return jsonify(filtered_planes)
 
 app.run(host="0.0.0.0", port=8000, debug=True)
-
